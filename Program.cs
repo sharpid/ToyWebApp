@@ -1,25 +1,28 @@
-var builder = WebApplication.CreateBuilder(args);
+using ToyWebApp.Helper;
 
-// Add services to the container.
-
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+namespace ToyWebApp;
+public class Program
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    public static IConfigurationBuilder ConfigurationBuilder { get; set; }
+    public static IConfiguration Configuration { get { return ConfigurationBuilder.Build(); } }
+    public static void Main(string[] args)
+    {
+        ConfigurationBuilder = CreateConfigurationBuilder();
+        var host_builder = CreateHostBuilder(args);
+        var host = host_builder.Build();
+        host.Run();
+    }
+
+    public static IConfigurationBuilder CreateConfigurationBuilder() 
+        => new ConfigurationBuilder().AddJsonFile("test.json", optional: true);
+
+    public static IHostBuilder CreateHostBuilder(string[] args)
+        => Host.CreateDefaultBuilder(args)
+            .ConfigureWebHostDefaults(web => { web.UseStartup<Startup>(); })
+            .ConfigureAppConfiguration((context, config) =>
+            {
+                config.AddConfiguration(Configuration);
+                ConfigurationBuilder.AddConfiguration(config.Build());
+            });
+
 }
-
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.MapControllers();
-
-app.Run();

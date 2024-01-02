@@ -11,7 +11,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="JWT" Version="10.1.1" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.5" />
+    <PackageReference Include="NLog" Version="5.2.7" />
+    <PackageReference Include="StackExchange.Redis" Version="2.7.10" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
 
